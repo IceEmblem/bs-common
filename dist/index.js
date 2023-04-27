@@ -34,6 +34,12 @@ Object.defineProperty(exports, "Entity", {
     return _BaseApi.Entity;
   }
 });
+Object.defineProperty(exports, "GroupMenuProvider", {
+  enumerable: true,
+  get: function get() {
+    return _MenuProvider["default"];
+  }
+});
 Object.defineProperty(exports, "LabelEX", {
   enumerable: true,
   get: function get() {
@@ -49,7 +55,13 @@ Object.defineProperty(exports, "Menu", {
 Object.defineProperty(exports, "MenuProvider", {
   enumerable: true,
   get: function get() {
-    return _MenuProvider["default"];
+    return _MenuProvider.MenuProvider;
+  }
+});
+Object.defineProperty(exports, "MenuWithUrl", {
+  enumerable: true,
+  get: function get() {
+    return _MenuProvider.MenuWithUrl;
   }
 });
 Object.defineProperty(exports, "bsCreateSlick", {
@@ -89,7 +101,7 @@ var _CommonPage = _interopRequireDefault(require("./components/CommonPage"));
 var _ExcelFile = require("./components/ExcelFile");
 var _LabelEX = _interopRequireDefault(require("./components/LabelEX"));
 var _Menu = _interopRequireDefault(require("./menu/Menu"));
-var _MenuProvider = _interopRequireDefault(require("./menu/MenuProvider"));
+var _MenuProvider = _interopRequireWildcard(require("./menu/MenuProvider"));
 var _bsCreateSlick = _interopRequireWildcard(require("./reduxs/bsCreateSlick"));
 var _lang = _interopRequireDefault(require("./lang"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }

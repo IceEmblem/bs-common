@@ -5,6 +5,6 @@ export { default as CommonPage } from '../src/components/CommonPage';
 export { exportXLSX } from '../src/components/ExcelFile';
 export { default as LabelEX } from '../src/components/LabelEX';
 export { default as Menu } from '../src/menu/Menu';
-export { default as MenuProvider } from '../src/menu/MenuProvider';
+export { default as GroupMenuProvider, MenuProvider, MenuWithUrl } from '../src/menu/MenuProvider';
 export { default as bsCreateSlick, BsSliceState, BsSlice } from '../src/reduxs/bsCreateSlick';
 export { default as lang } from '../src/lang';

@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports["default"] = void 0;
+exports["default"] = exports.MenuProvider = void 0;
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
@@ -16,15 +16,15 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
 function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
-var _MenuProvider = /*#__PURE__*/function () {
-  function _MenuProvider(preUrl) {
-    _classCallCheck(this, _MenuProvider);
+var MenuProvider = /*#__PURE__*/function () {
+  function MenuProvider(preUrl) {
+    _classCallCheck(this, MenuProvider);
     _defineProperty(this, "menus", []);
     this.preUrl = preUrl;
   }
 
   // 注册导航栏菜单
-  _createClass(_MenuProvider, [{
+  _createClass(MenuProvider, [{
     key: "registerMenu",
     value: function registerMenu(menu) {
       var sort = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
@@ -114,12 +114,13 @@ var _MenuProvider = /*#__PURE__*/function () {
       return newMenu;
     }
   }]);
-  return _MenuProvider;
+  return MenuProvider;
 }();
-var MenuProvider = /*#__PURE__*/function () {
-  function MenuProvider() {
+exports.MenuProvider = MenuProvider;
+var GroupMenuProvider = /*#__PURE__*/function () {
+  function GroupMenuProvider() {
     var _this2 = this;
-    _classCallCheck(this, MenuProvider);
+    _classCallCheck(this, GroupMenuProvider);
     // 路由前缀
     // 当前后台
     // 菜单
@@ -128,7 +129,7 @@ var MenuProvider = /*#__PURE__*/function () {
       return _this2.mapMenus.get(backstage);
     });
   }
-  _createClass(MenuProvider, [{
+  _createClass(GroupMenuProvider, [{
     key: "registerMenu",
     value:
     // 注册导航栏菜单
@@ -164,10 +165,10 @@ var MenuProvider = /*#__PURE__*/function () {
       return this._getMenuProvider(backstage).getUrl(menuNames);
     }
   }]);
-  return MenuProvider;
+  return GroupMenuProvider;
 }(); // class MenuProviderEx extends MenuProvider {
 //     preRoute = '/back';
 //     backstage = 'admin';
 //     mapMenus = new Map<string, _MenuProvider>();
 // }
-exports["default"] = MenuProvider;
+exports["default"] = GroupMenuProvider;

@@ -11,7 +11,7 @@ interface MenuWithUrlSort extends MenuWithUrl {
     sort: number,
 }
 
-class _MenuProvider {
+export class MenuProvider {
     public menus: Array<MenuWithUrlSort> = [];
     public preUrl: string;
 
@@ -91,7 +91,7 @@ class _MenuProvider {
     }
 }
 
-export default abstract class MenuProvider {
+export default abstract class GroupMenuProvider {
     // 路由前缀
     public abstract preRoute: string;
 
@@ -99,7 +99,7 @@ export default abstract class MenuProvider {
     public abstract backstage: string;
 
     // 菜单
-    protected abstract mapMenus: Map<string, _MenuProvider>;
+    protected abstract mapMenus: Map<string, MenuProvider>;
 
     // 获取菜单提供器
     private _getMenuProvider = (backstage: string) => this.mapMenus.get(backstage)!;
