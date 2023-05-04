@@ -20,10 +20,8 @@ var Lang = /*#__PURE__*/function () {
       return name;
     });
     _defineProperty(this, "change", function (langName) {
-      localStorage.setItem(Lang.LangCacheKey, langName);
       _this._lang = langName;
     });
-    this._lang = localStorage.getItem(Lang.LangCacheKey);
   }
   _createClass(Lang, [{
     key: "lang",
@@ -33,6 +31,5 @@ var Lang = /*#__PURE__*/function () {
   }]);
   return Lang;
 }();
-_defineProperty(Lang, "LangCacheKey", '_lang_');
 var _default = new Lang();
 exports["default"] = _default;
