@@ -6,7 +6,7 @@ import HighLevelSearch, { FilterColumnType } from './HighLevelSearch';
 
 export type TableEXColumnType = TableColumnType<any>;
 
-type Sorter = {
+export type Sorter = {
     columnKey: string,
     field: string | undefined,
     order: "ascend" | "descend"
@@ -97,7 +97,7 @@ export default class extends React.Component<Props> {
     exportExcel = () => {
         let selectRows = this.props.rowSelection?.selectedRows || [];
         if (selectRows.length == 0) {
-            message.error(lang.t('noselectrowtip'));
+            message.error(lang.t('no_select_row_tip'));
             return;
         }
 
@@ -134,8 +134,14 @@ export default class extends React.Component<Props> {
 
     render() {
         let colums = this.props.columns;
-        return <div className='h-full flex flex-col overflow-y-hidden'>
-            <div className='mb-4'>
+        return <div style={{
+            height: '100%',
+            width: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            overflow: 'hidden'
+        }}>
+            <div style={{ marginBottom: '1rem' }}>
                 <HighLevelSearch
                     columns={this.props.filterColumns}
                     onChange={(filter) => {
@@ -148,8 +154,14 @@ export default class extends React.Component<Props> {
                 />
             </div>
             <div ref={(r) => this.tableRef = r}
-                className='flex-grow overflow-y-hidden mb-4'
-                style={{ flexShrink: 100, borderBottom: "1px solid #f0f2f5" }}>
+                style={{ 
+                    display: 'flex',
+                    flexGrow: 1,
+                    overflowY: 'hidden',
+                    marginBottom: '1rem',
+                    flexShrink: 100, 
+                    borderBottom: "1px solid #f0f2f5" 
+                }}>
                 <Table
                     rowKey={this.props.rowKey || 'id'}
                     loading={this.props.isLoading}
@@ -187,11 +199,11 @@ export default class extends React.Component<Props> {
                     pageSize={this.props.pageSize}
                     current={this.props.page}
                     showSizeChanger
-                    pageSizeOptions={['10', '30', '50']}
+                    pageSizeOptions={['10', '30', '50', '100']}
                     showQuickJumper
                     showTotal={total => <div>
                         {this.props.rowSelection && <Button type='primary' onClick={this.exportExcel}>{lang.t('export')}</Button>}
-                        <span className='ml-4'>{`${lang.t('total_data')} ${total} ${lang.t('items')}`}</span>
+                        <span style={{marginLeft: '1rem'}}>{`${lang.t('total_data')} ${total} ${lang.t('items')}`}</span>
                     </div>}
                     onChange={(page, pageSize) => {
                         this.props.onChange(page, pageSize);

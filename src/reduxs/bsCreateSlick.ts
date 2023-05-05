@@ -28,7 +28,7 @@ const create = (name: string, api: BaseApi<any>) => {
             name: name,
             initialState: {
                 page: 1,
-                pageSize: 10,
+                pageSize: 30,
                 filter: {} as any,
                 sorter: null as any,
                 total: 0,

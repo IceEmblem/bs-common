@@ -1,6 +1,7 @@
 import token from './token';
+import { message } from 'antd';
 
-export default async function bsFetch<T>(input: string, init?: RequestInit | undefined): Promise<T> {
+async function bsFetch<T>(input: string, init?: RequestInit | undefined): Promise<T> {
     let newInit: RequestInit = {
         ...init
     };
@@ -8,7 +9,7 @@ export default async function bsFetch<T>(input: string, init?: RequestInit | und
     if (!newInit.headers) {
         newInit.headers = {
             'Content-Type': 'application/json',
-            'Accept': 'application/json'
+            'Accept': 'application/ld+json'
         }
     }
 
@@ -45,4 +46,18 @@ export default async function bsFetch<T>(input: string, init?: RequestInit | und
 
     const error = new Error(`${response.status} ${response.statusText}`);
     throw error;
+}
+
+export default async function<T>(input: string, init?: RequestInit & {
+    hiddenErrMes?: boolean
+} | undefined) {
+    try {
+        return await bsFetch<T>(input, init);
+    }
+    catch (ex) {
+        if (init?.hiddenErrMes != true) {
+            message.error(ex.message);
+        }
+        throw ex;
+    }
 }

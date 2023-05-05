@@ -50,7 +50,7 @@ var _default = /*#__PURE__*/function (_React$Component) {
       var _this$props$rowSelect;
       var selectRows = ((_this$props$rowSelect = _this.props.rowSelection) === null || _this$props$rowSelect === void 0 ? void 0 : _this$props$rowSelect.selectedRows) || [];
       if (selectRows.length == 0) {
-        _antd.message.error(_lang["default"].t('noselectrowtip'));
+        _antd.message.error(_lang["default"].t('no_select_row_tip'));
         return;
       }
       var exportCols = _this.props.columns.filter(function (e) {
@@ -133,9 +133,17 @@ var _default = /*#__PURE__*/function (_React$Component) {
       var _this3 = this;
       var colums = this.props.columns;
       return /*#__PURE__*/_react["default"].createElement("div", {
-        className: "h-full flex flex-col overflow-y-hidden"
+        style: {
+          height: '100%',
+          width: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          overflow: 'hidden'
+        }
       }, /*#__PURE__*/_react["default"].createElement("div", {
-        className: "mb-4"
+        style: {
+          marginBottom: '1rem'
+        }
       }, /*#__PURE__*/_react["default"].createElement(_HighLevelSearch["default"], {
         columns: this.props.filterColumns,
         onChange: function onChange(filter) {
@@ -145,8 +153,11 @@ var _default = /*#__PURE__*/function (_React$Component) {
         ref: function ref(r) {
           return _this3.tableRef = r;
         },
-        className: "flex-grow overflow-y-hidden mb-4",
         style: {
+          display: 'flex',
+          flexGrow: 1,
+          overflowY: 'hidden',
+          marginBottom: '1rem',
           flexShrink: 100,
           borderBottom: "1px solid #f0f2f5"
         }
@@ -181,14 +192,16 @@ var _default = /*#__PURE__*/function (_React$Component) {
         pageSize: this.props.pageSize,
         current: this.props.page,
         showSizeChanger: true,
-        pageSizeOptions: ['10', '30', '50'],
+        pageSizeOptions: ['10', '30', '50', '100'],
         showQuickJumper: true,
         showTotal: function showTotal(total) {
           return /*#__PURE__*/_react["default"].createElement("div", null, _this3.props.rowSelection && /*#__PURE__*/_react["default"].createElement(_antd.Button, {
             type: "primary",
             onClick: _this3.exportExcel
           }, _lang["default"].t('export')), /*#__PURE__*/_react["default"].createElement("span", {
-            className: "ml-4"
+            style: {
+              marginLeft: '1rem'
+            }
           }, "".concat(_lang["default"].t('total_data'), " ").concat(total, " ").concat(_lang["default"].t('items'))));
         },
         onChange: function onChange(page, pageSize) {

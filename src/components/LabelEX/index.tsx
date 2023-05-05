@@ -15,7 +15,12 @@ export default class extends React.Component<{
 
         return <div className={this.props.className} style={{ display: 'flex', alignItems: 'center', ...style }}>
             <span className={`${this.props.isMust ? 'must' : ''} inline-block flex-shrink-0 mr-2 ${this.props.tagClassName || ''}`}
-                style={tagStyle}
+                style={{
+                    display: 'inline-block',
+                    flexShrink: 0,
+                    marginRight: '0.5rem',
+                    ...tagStyle
+                }}
             >{this.props.text}</span>
             {this.props.children}
         </div>

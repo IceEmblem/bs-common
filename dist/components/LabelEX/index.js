@@ -42,7 +42,11 @@ var _default = /*#__PURE__*/function (_React$Component) {
         }, style)
       }, /*#__PURE__*/_react["default"].createElement("span", {
         className: "".concat(this.props.isMust ? 'must' : '', " inline-block flex-shrink-0 mr-2 ").concat(this.props.tagClassName || ''),
-        style: tagStyle
+        style: _objectSpread({
+          display: 'inline-block',
+          flexShrink: 0,
+          marginRight: '0.5rem'
+        }, tagStyle)
       }, this.props.text), this.props.children);
     }
   }]);

@@ -11,7 +11,8 @@ var _icons = require("@ant-design/icons");
 var _dayjs = _interopRequireDefault(require("dayjs"));
 var _LabelEX = _interopRequireDefault(require("../LabelEX"));
 var _lang = _interopRequireDefault(require("../../lang"));
-var _excluded = ["isModalVisible"];
+var _excluded = ["isModalVisible"],
+  _excluded2 = ["isModalVisible"];
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 function _objectWithoutProperties(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
 function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
@@ -203,7 +204,9 @@ var _default = /*#__PURE__*/function (_React$Component) {
         var Filter = item.filter;
         return /*#__PURE__*/_react["default"].createElement(_antd.Col, {
           key: item.dataIndex,
-          className: "mr-4"
+          style: {
+            marginRight: '1rem'
+          }
         }, /*#__PURE__*/_react["default"].createElement(_LabelEX["default"], {
           text: item.title
         }, /*#__PURE__*/_react["default"].createElement(Filter, {
@@ -217,12 +220,24 @@ var _default = /*#__PURE__*/function (_React$Component) {
       }), /*#__PURE__*/_react["default"].createElement("div", {
         className: "flex-grow"
       }), /*#__PURE__*/_react["default"].createElement(_antd.Col, null, /*#__PURE__*/_react["default"].createElement(_antd.Space, null, /*#__PURE__*/_react["default"].createElement(_antd.Button, {
-        type: "primary",
-        icon: /*#__PURE__*/_react["default"].createElement(_icons.FileSearchOutlined, null),
+        icon: /*#__PURE__*/_react["default"].createElement(_icons.SyncOutlined, null),
         onClick: function onClick() {
           var _this2$state = _this2.state,
             isModalVisible = _this2$state.isModalVisible,
             other = _objectWithoutProperties(_this2$state, _excluded);
+          Object.keys(other).forEach(function (key) {
+            other[key] = undefined;
+          });
+          _this2.setState(other);
+          _this2.props.onChange(other);
+        }
+      }, _lang["default"].t('reset')), /*#__PURE__*/_react["default"].createElement(_antd.Button, {
+        type: "primary",
+        icon: /*#__PURE__*/_react["default"].createElement(_icons.FileSearchOutlined, null),
+        onClick: function onClick() {
+          var _this2$state2 = _this2.state,
+            isModalVisible = _this2$state2.isModalVisible,
+            other = _objectWithoutProperties(_this2$state2, _excluded2);
           _this2.props.onChange(other);
         }
       }, _lang["default"].t('inquire')), this.props.btns)));

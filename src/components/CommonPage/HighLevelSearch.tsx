@@ -1,6 +1,6 @@
 import React from 'react';
 import { Col, Row, Space, Button, Modal, Input, InputNumber, Radio, DatePicker, CheckboxOptionType, Checkbox, Select } from 'antd';
-import { ReloadOutlined, FileSearchOutlined, SecurityScanOutlined } from '@ant-design/icons';
+import { ReloadOutlined, FileSearchOutlined, SyncOutlined } from '@ant-design/icons';
 import dayjs, { Dayjs } from 'dayjs';
 import LabelEX from '../LabelEX';
 import lang from '../../lang';
@@ -193,7 +193,7 @@ export default class extends React.Component<Props> {
                     let Filter = item.filter;
 
                     return (
-                        <Col key={item.dataIndex} className='mr-4'>
+                        <Col key={item.dataIndex} style={{ marginRight: '1rem' }}>
                             <LabelEX text={item.title}>
                                 <Filter
                                     value={this.state[item.dataIndex]}
@@ -211,6 +211,16 @@ export default class extends React.Component<Props> {
             <div className='flex-grow'></div>
             <Col>
                 <Space>
+                    <Button icon={<SyncOutlined />}
+                        onClick={() => {
+                            let { isModalVisible, ...other } = this.state;
+                            Object.keys(other).forEach(key => {
+                                other[key] = undefined;
+                            });
+                            this.setState(other);
+                            this.props.onChange(other);
+                        }}
+                    >{lang.t('reset')}</Button>
                     <Button type='primary' icon={<FileSearchOutlined />}
                         onClick={() => {
                             let { isModalVisible, ...other } = this.state;

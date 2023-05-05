@@ -47,7 +47,7 @@ var create = function create(name, api) {
     name: name,
     initialState: {
       page: 1,
-      pageSize: 10,
+      pageSize: 30,
       filter: {},
       sorter: null,
       total: 0,

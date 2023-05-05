@@ -49,7 +49,7 @@ export default abstract class BaseApi<T extends Entity> {
     async create(model: T): Promise<T> {
         return await bsFetch<T>(this.url, {
             method: 'POST',
-            body: JSON.stringify(model)
+            body: JSON.stringify(model),
         });
     }
 
