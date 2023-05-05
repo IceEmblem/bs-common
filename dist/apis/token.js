@@ -41,6 +41,7 @@ var Token = /*#__PURE__*/function () {
     value: function clearToken() {
       this.userInfo = null;
       this.token = null;
+      window.localStorage.removeItem(this.tokenStorageKey);
     }
   }, {
     key: "decodeUserInfo",
