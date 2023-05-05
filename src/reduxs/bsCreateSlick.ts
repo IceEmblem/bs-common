@@ -1,7 +1,7 @@
 import { createSlice, CreateSliceOptions, PayloadAction, Slice, createAsyncThunk } from '@reduxjs/toolkit';
 import BaseApi, { Entity } from '../apis/BaseApi';
 
-const create = <T extends Entity>(name: string, api: BaseApi<T>) => {
+const create = (name: string, api: BaseApi<any>) => {
     // First, create the thunk
     const fetchPageDatass = createAsyncThunk(
         `${name}/fetchPageDatass`,
@@ -9,7 +9,7 @@ const create = <T extends Entity>(name: string, api: BaseApi<T>) => {
             page: number,
             pageSize: number,
             filter?: any,
-            sortField?: keyof T,
+            sortField?: any,
             sortDirection?: 'asc' | 'desc'
         }, thunkAPI) => {
             let list = await api.getList(params.page, params.pageSize, params.filter, params.sortField, params.sortDirection);
