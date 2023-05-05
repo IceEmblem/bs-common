@@ -22,6 +22,7 @@ class Token {
     clearToken() {
         this.userInfo = null;
         this.token = null;
+        window.localStorage.removeItem(this.tokenStorageKey)
     }
 
     private decodeUserInfo(token: string) {
