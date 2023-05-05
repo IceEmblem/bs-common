@@ -87,7 +87,7 @@ export default abstract class BaseApi<T extends Entity> {
 
                 if (Array.isArray(value) && value.length > 0) {
                     // 范围筛选
-                    if (typeof (value[0]) == 'number') {
+                    if (typeof (value[0]) == 'number' || typeof (value[1]) == 'number') {
                         urlParams[`${key}%5Bgte%5D`] = value[0];
                         urlParams[`${key}%5Blte%5D`] = value[1];
                         continue;
@@ -102,7 +102,7 @@ export default abstract class BaseApi<T extends Entity> {
                     }
 
                     // 日期范围筛选
-                    if (typeof (value[0]) == 'object') {
+                    if (typeof (value[0]) == 'object' || typeof (value[1]) == 'object') {
                         urlParams[`${key}%5Bafter%5D`] = (value[0] as Date)?.toISOString().substring(0, 19);
                         urlParams[`${key}%5Bbefore%5D`] = (value[1] as Date)?.toISOString().substring(0, 19);
                         continue;

@@ -2,6 +2,7 @@ export { default as BaseApi, Entity } from './apis/BaseApi';
 export { default as bsFetch } from './apis/bsFetch';
 export { default as token } from './apis/token';
 export { default as CommonPage } from './components/CommonPage';
+export { TextFilter, NumFilter, TimeFilter, ChecksFilter, RadioFilter, SelectFilter, DateRange, NumRange } from './components/CommonPage/HighLevelSearch';
 export { exportXLSX } from './components/ExcelFile';
 export { default as LabelEX } from './components/LabelEX';
 export { default as Menu } from './menu/Menu';

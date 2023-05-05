@@ -174,7 +174,7 @@ var BaseApi = /*#__PURE__*/function () {
                 _context5.next = 21;
                 break;
               }
-              if (!(typeof value[0] == 'number')) {
+              if (!(typeof value[0] == 'number' || typeof value[1] == 'number')) {
                 _context5.next = 13;
                 break;
               }
@@ -199,7 +199,7 @@ var BaseApi = /*#__PURE__*/function () {
               }
               return _context5.abrupt("continue", 22);
             case 17:
-              if (!(_typeof(value[0]) == 'object')) {
+              if (!(_typeof(value[0]) == 'object' || _typeof(value[1]) == 'object')) {
                 _context5.next = 21;
                 break;
               }
