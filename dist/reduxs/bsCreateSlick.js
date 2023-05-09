@@ -16,7 +16,7 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 var create = function create(name, api) {
   // First, create the thunk
-  var fetchPageDatass = (0, _toolkit.createAsyncThunk)("".concat(name, "/fetchPageDatass"), /*#__PURE__*/function () {
+  var fetchPageDatas = (0, _toolkit.createAsyncThunk)("".concat(name, "/fetchPageDatas"), /*#__PURE__*/function () {
     var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(params, thunkAPI) {
       var list;
       return _regeneratorRuntime().wrap(function _callee$(_context) {
@@ -31,7 +31,9 @@ var create = function create(name, api) {
               pageSize: params.pageSize,
               total: list['hydra:totalItems'],
               filter: params.filter,
-              datas: list['hydra:member']
+              datas: list['hydra:member'],
+              sortField: params.sortField,
+              sortDirection: params.sortDirection
             });
           case 4:
           case "end":
@@ -43,30 +45,63 @@ var create = function create(name, api) {
       return _ref.apply(this, arguments);
     };
   }());
+  var refreshPageDatas = (0, _toolkit.createAsyncThunk)("".concat(name, "/refreshPageDatas"), /*#__PURE__*/function () {
+    var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(params, thunkAPI) {
+      var state, list;
+      return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+        while (1) switch (_context2.prev = _context2.next) {
+          case 0:
+            state = thunkAPI.getState()[name];
+            _context2.next = 3;
+            return api.getList(state.page, state.pageSize, state.filter, state.sortField, state.sortDirection);
+          case 3:
+            list = _context2.sent;
+            return _context2.abrupt("return", {
+              total: list['hydra:totalItems'],
+              datas: list['hydra:member']
+            });
+          case 5:
+          case "end":
+            return _context2.stop();
+        }
+      }, _callee2);
+    }));
+    return function (_x3, _x4) {
+      return _ref2.apply(this, arguments);
+    };
+  }());
   return _objectSpread(_objectSpread({}, (0, _toolkit.createSlice)({
     name: name,
     initialState: {
-      page: 1,
+      page: -1,
       pageSize: 30,
       filter: {},
-      sorter: null,
+      sortField: undefined,
+      sortDirection: 'desc',
       total: 0,
       datas: []
     },
     reducers: {},
     extraReducers: function extraReducers(builder) {
       // Add reducers for additional action types here, and handle loading state as needed
-      builder.addCase(fetchPageDatass.fulfilled, function (state, action) {
+      builder.addCase(fetchPageDatas.fulfilled, function (state, action) {
         state.page = action.payload.page;
         state.pageSize = action.payload.pageSize;
         state.total = action.payload.total;
         state.filter = action.payload.filter;
         state.datas = action.payload.datas;
+        state.sortField = action.payload.sortField;
+        state.sortDirection = action.payload.sortDirection;
+      });
+      builder.addCase(refreshPageDatas.fulfilled, function (state, action) {
+        state.total = action.payload.total;
+        state.datas = action.payload.datas;
       });
     }
   })), {}, {
     asyncActions: {
-      fetchPageDatass: fetchPageDatass
+      fetchPageDatas: fetchPageDatas,
+      refreshPageDatas: refreshPageDatas
     }
   });
 };

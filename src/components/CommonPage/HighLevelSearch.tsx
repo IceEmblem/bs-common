@@ -22,7 +22,7 @@ export const TextFilter = (props: fliterProps & {
     if (isNumber == true) {
         return <InputNumber
             className='w-full'
-            placeholder='请输入'
+            placeholder='input'
             controls={false}
             value={value}
             onChange={val => setValue(val)}
@@ -30,7 +30,7 @@ export const TextFilter = (props: fliterProps & {
     }
 
     return <Input
-        placeholder='请输入'
+        placeholder='input'
         value={value}
         onChange={e => setValue(e.target.value)}
     />
@@ -110,7 +110,7 @@ export const SelectFilter = (props: fliterProps & {
         <Select
             showSearch
             allowClear
-            placeholder='请选择'
+            placeholder='select'
             style={{ minWidth: 180 }}
             value={value}
             onChange={(val) => {

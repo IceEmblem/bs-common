@@ -1,8 +1,9 @@
 import React from 'react';
-import { Col, Row, Space, Button, Form, Input, Tabs, Table, Tag, Pagination, Tooltip, TableColumnType, Checkbox, message } from 'antd';
+import { Segmented, Row, Space, Button, Form, Input, Tabs, Table, Tag, Pagination, Tooltip, TableColumnType, Checkbox, message } from 'antd';
 import lang from '../../lang';
 import { exportXLSX } from '../ExcelFile';
 import HighLevelSearch, { FilterColumnType } from './HighLevelSearch';
+import { SyncOutlined } from '@ant-design/icons';
 
 export type TableEXColumnType = TableColumnType<any>;
 
@@ -21,6 +22,8 @@ type Props = {
     total: number,
     // 数据
     datas: Array<any>,
+    filter?: any,
+    sorter?: Sorter,
     // Table 页发生改变时回调
     onChange: (page?: number, pageSize?: number, filter?: any, sorter?: Sorter) => void,
     // antd Table columns
@@ -43,6 +46,17 @@ type Props = {
     },
     // 工具条
     bottomTools?: React.ReactNode,
+    // 分类设置
+    classConfig?: {
+        // 分类
+        classes: Array<{ label: React.ReactNode, value: string }>,
+        // api 查询时使用的名称
+        queryName: string,
+    },
+    // 工具栏
+    tools?: React.ReactNode,
+    // 导出动作
+    exportAction?: (rows: Array<any>, filter?: any) => void,
 };
 
 export default class extends React.Component<Props> {
@@ -94,8 +108,14 @@ export default class extends React.Component<Props> {
         }, 1);
     }
 
-    exportExcel = () => {
+    exportAction = () => {
         let selectRows = this.props.rowSelection?.selectedRows || [];
+
+        if (this.props.exportAction) {
+            this.props.exportAction(selectRows, this.props.filter);
+            return;
+        }
+
         if (selectRows.length == 0) {
             message.error(lang.t('no_select_row_tip'));
             return;
@@ -148,19 +168,67 @@ export default class extends React.Component<Props> {
                         this.props.onChange(
                             1,
                             undefined,
-                            filter
+                            {
+                                ...this.props.filter,
+                                ...filter
+                            }
                         );
                     }}
                 />
             </div>
+            <Row justify='space-between' style={{ gap: 8, alignItems: 'center', marginBottom: 8 }}>
+                {
+                    this.props.classConfig &&
+                    <Tabs
+                        style={{ flexGrow: 1 }}
+                        tabBarStyle={{ marginBottom: 0 }}
+                        size='small'
+                        type="card"
+                        activeKey={this.props.filter?.[this.props.classConfig.queryName]}
+                        onChange={(val) => {
+                            let newFilter = { ...this.props.filter };
+                            newFilter[this.props.classConfig!.queryName] = val;
+                            this.props.onChange(
+                                undefined,
+                                undefined,
+                                newFilter,
+                                undefined,
+                            );
+                        }}
+                    >
+                        {
+                            this.props.classConfig.classes.map(item => (<Tabs.TabPane tab={item.label} key={item.value} />))
+                        }
+                    </Tabs>
+                }
+                <div style={{ flexGrow: 1 }}></div>
+                {
+                    this.props.tools
+                }
+                <Space>
+                    <Tooltip title='刷新'>
+                        <Button type='text' icon={<SyncOutlined />}
+                            onClick={() => {
+                                this.props.onChange(
+                                    undefined,
+                                    undefined,
+                                    undefined,
+                                    undefined,
+                                );
+                            }}
+                        ></Button>
+                    </Tooltip>
+                    {this.props.rowSelection && <Button type='primary' onClick={this.exportAction}>{lang.t('export')}</Button>}
+                </Space>
+            </Row>
             <div ref={(r) => this.tableRef = r}
-                style={{ 
+                style={{
                     display: 'flex',
                     flexGrow: 1,
                     overflowY: 'hidden',
                     marginBottom: '1rem',
-                    flexShrink: 100, 
-                    borderBottom: "1px solid #f0f2f5" 
+                    flexShrink: 100,
+                    borderBottom: "1px solid #f0f2f5"
                 }}>
                 <Table
                     rowKey={this.props.rowKey || 'id'}
@@ -202,8 +270,7 @@ export default class extends React.Component<Props> {
                     pageSizeOptions={['10', '30', '50', '100']}
                     showQuickJumper
                     showTotal={total => <div>
-                        {this.props.rowSelection && <Button type='primary' onClick={this.exportExcel}>{lang.t('export')}</Button>}
-                        <span style={{marginLeft: '1rem'}}>{`${lang.t('total_data')} ${total} ${lang.t('items')}`}</span>
+                        <span style={{ marginLeft: '1rem' }}>{`${lang.t('total_data')} ${total} ${lang.t('items')}`}</span>
                     </div>}
                     onChange={(page, pageSize) => {
                         this.props.onChange(page, pageSize);

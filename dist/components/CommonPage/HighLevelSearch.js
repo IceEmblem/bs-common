@@ -38,7 +38,7 @@ var TextFilter = function TextFilter(props) {
   if (isNumber == true) {
     return /*#__PURE__*/_react["default"].createElement(_antd.InputNumber, {
       className: "w-full",
-      placeholder: "\u8BF7\u8F93\u5165",
+      placeholder: "input",
       controls: false,
       value: value,
       onChange: function onChange(val) {
@@ -47,7 +47,7 @@ var TextFilter = function TextFilter(props) {
     });
   }
   return /*#__PURE__*/_react["default"].createElement(_antd.Input, {
-    placeholder: "\u8BF7\u8F93\u5165",
+    placeholder: "input",
     value: value,
     onChange: function onChange(e) {
       return setValue(e.target.value);
@@ -130,7 +130,7 @@ var SelectFilter = function SelectFilter(props) {
   }, /*#__PURE__*/_react["default"].createElement(_antd.Select, {
     showSearch: true,
     allowClear: true,
-    placeholder: "\u8BF7\u9009\u62E9",
+    placeholder: "select",
     style: {
       minWidth: 180
     },

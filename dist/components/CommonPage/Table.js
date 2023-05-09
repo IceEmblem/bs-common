@@ -9,6 +9,7 @@ var _antd = require("antd");
 var _lang = _interopRequireDefault(require("../../lang"));
 var _ExcelFile = require("../ExcelFile");
 var _HighLevelSearch = _interopRequireDefault(require("./HighLevelSearch"));
+var _icons = require("@ant-design/icons");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
@@ -46,9 +47,13 @@ var _default = /*#__PURE__*/function (_React$Component) {
         y: undefined
       }
     });
-    _defineProperty(_assertThisInitialized(_this), "exportExcel", function () {
+    _defineProperty(_assertThisInitialized(_this), "exportAction", function () {
       var _this$props$rowSelect;
       var selectRows = ((_this$props$rowSelect = _this.props.rowSelection) === null || _this$props$rowSelect === void 0 ? void 0 : _this$props$rowSelect.selectedRows) || [];
+      if (_this.props.exportAction) {
+        _this.props.exportAction(selectRows, _this.props.filter);
+        return;
+      }
       if (selectRows.length == 0) {
         _antd.message.error(_lang["default"].t('no_select_row_tip'));
         return;
@@ -130,7 +135,8 @@ var _default = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this3 = this;
+      var _this3 = this,
+        _this$props$filter;
       var colums = this.props.columns;
       return /*#__PURE__*/_react["default"].createElement("div", {
         style: {
@@ -147,9 +153,51 @@ var _default = /*#__PURE__*/function (_React$Component) {
       }, /*#__PURE__*/_react["default"].createElement(_HighLevelSearch["default"], {
         columns: this.props.filterColumns,
         onChange: function onChange(filter) {
-          _this3.props.onChange(1, undefined, filter);
+          _this3.props.onChange(1, undefined, _objectSpread(_objectSpread({}, _this3.props.filter), filter));
         }
+      })), /*#__PURE__*/_react["default"].createElement(_antd.Row, {
+        justify: "space-between",
+        style: {
+          gap: 8,
+          alignItems: 'center',
+          marginBottom: 8
+        }
+      }, this.props.classConfig && /*#__PURE__*/_react["default"].createElement(_antd.Tabs, {
+        style: {
+          flexGrow: 1
+        },
+        tabBarStyle: {
+          marginBottom: 0
+        },
+        size: "small",
+        type: "card",
+        activeKey: (_this$props$filter = this.props.filter) === null || _this$props$filter === void 0 ? void 0 : _this$props$filter[this.props.classConfig.queryName],
+        onChange: function onChange(val) {
+          var newFilter = _objectSpread({}, _this3.props.filter);
+          newFilter[_this3.props.classConfig.queryName] = val;
+          _this3.props.onChange(undefined, undefined, newFilter, undefined);
+        }
+      }, this.props.classConfig.classes.map(function (item) {
+        return /*#__PURE__*/_react["default"].createElement(_antd.Tabs.TabPane, {
+          tab: item.label,
+          key: item.value
+        });
       })), /*#__PURE__*/_react["default"].createElement("div", {
+        style: {
+          flexGrow: 1
+        }
+      }), this.props.tools, /*#__PURE__*/_react["default"].createElement(_antd.Space, null, /*#__PURE__*/_react["default"].createElement(_antd.Tooltip, {
+        title: "\u5237\u65B0"
+      }, /*#__PURE__*/_react["default"].createElement(_antd.Button, {
+        type: "text",
+        icon: /*#__PURE__*/_react["default"].createElement(_icons.SyncOutlined, null),
+        onClick: function onClick() {
+          _this3.props.onChange(undefined, undefined, undefined, undefined);
+        }
+      })), this.props.rowSelection && /*#__PURE__*/_react["default"].createElement(_antd.Button, {
+        type: "primary",
+        onClick: this.exportAction
+      }, _lang["default"].t('export')))), /*#__PURE__*/_react["default"].createElement("div", {
         ref: function ref(r) {
           return _this3.tableRef = r;
         },
@@ -195,10 +243,7 @@ var _default = /*#__PURE__*/function (_React$Component) {
         pageSizeOptions: ['10', '30', '50', '100'],
         showQuickJumper: true,
         showTotal: function showTotal(total) {
-          return /*#__PURE__*/_react["default"].createElement("div", null, _this3.props.rowSelection && /*#__PURE__*/_react["default"].createElement(_antd.Button, {
-            type: "primary",
-            onClick: _this3.exportExcel
-          }, _lang["default"].t('export')), /*#__PURE__*/_react["default"].createElement("span", {
+          return /*#__PURE__*/_react["default"].createElement("div", null, /*#__PURE__*/_react["default"].createElement("span", {
             style: {
               marginLeft: '1rem'
             }
