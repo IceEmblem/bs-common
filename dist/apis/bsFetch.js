@@ -16,6 +16,26 @@ function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _ty
 function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+var urlRegex = /\?[^\?]+$/;
+
+// 合并url参数到url上
+function mergeUrl(url, urlParams) {
+  var newUrl = url;
+  if (urlRegex.test(newUrl)) {
+    newUrl = newUrl + '&';
+  } else {
+    newUrl = newUrl + '?';
+  }
+  var urlParamStr = '';
+  Object.keys(urlParams).forEach(function (key) {
+    var param = urlParams[key];
+    if (param == undefined) {
+      return;
+    }
+    urlParamStr = urlParamStr + "".concat(key, "=").concat(encodeURIComponent(param), "&");
+  });
+  return encodeURI(newUrl) + urlParamStr;
+}
 function bsFetch(_x, _x2) {
   return _bsFetch.apply(this, arguments);
 }
@@ -40,7 +60,7 @@ function _bsFetch() {
         case 5:
           response = _context.sent;
           if (!(response.status >= 200 && response.status < 300)) {
-            _context.next = 10;
+            _context.next = 12;
             break;
           }
           if (!(response.status == 204)) {
@@ -49,62 +69,48 @@ function _bsFetch() {
           }
           return _context.abrupt("return", null);
         case 9:
+          if (!((init === null || init === void 0 ? void 0 : init.isFile) == true)) {
+            _context.next = 11;
+            break;
+          }
+          return _context.abrupt("return", response.blob());
+        case 11:
           return _context.abrupt("return", response.json());
-        case 10:
+        case 12:
           if (!(response.status == 401)) {
-            _context.next = 13;
+            _context.next = 15;
             break;
           }
           _error = new Error('401 Authentication failed');
           throw _error;
-        case 13:
+        case 15:
           if (!(response.status == 404)) {
-            _context.next = 16;
+            _context.next = 18;
             break;
           }
           _error2 = new Error('404 Resource not found');
           throw _error2;
-        case 16:
+        case 18:
           if (!(response.status >= 400 && response.status < 500)) {
-            _context.next = 22;
+            _context.next = 24;
             break;
           }
-          _context.next = 19;
+          _context.next = 21;
           return response.json();
-        case 19:
+        case 21:
           data = _context.sent;
           _error3 = new Error("".concat(data['hydra:description'] || 'unknown exception'));
           throw _error3;
-        case 22:
+        case 24:
           error = new Error("".concat(response.status, " ").concat(response.statusText));
           throw error;
-        case 24:
+        case 26:
         case "end":
           return _context.stop();
       }
     }, _callee);
   }));
   return _bsFetch.apply(this, arguments);
-}
-var urlRegex = /\?[^\?]+$/;
-
-// 合并url参数到url上
-function mergeUrl(url, urlParams) {
-  var newUrl = url;
-  if (urlRegex.test(newUrl)) {
-    newUrl = newUrl + '&';
-  } else {
-    newUrl = newUrl + '?';
-  }
-  var urlParamStr = '';
-  Object.keys(urlParams).forEach(function (key) {
-    var param = urlParams[key];
-    if (param == undefined) {
-      return;
-    }
-    urlParamStr = urlParamStr + "".concat(key, "=").concat(encodeURIComponent(param), "&");
-  });
-  return encodeURI(newUrl) + urlParamStr;
 }
 function _default(_x3, _x4) {
   return _ref.apply(this, arguments);
