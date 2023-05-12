@@ -86,31 +86,53 @@ function _bsFetch() {
   }));
   return _bsFetch.apply(this, arguments);
 }
+var urlRegex = /\?[^\?]+$/;
+
+// 合并url参数到url上
+function mergeUrl(url, urlParams) {
+  var newUrl = url;
+  if (urlRegex.test(newUrl)) {
+    newUrl = newUrl + '&';
+  } else {
+    newUrl = newUrl + '?';
+  }
+  var urlParamStr = '';
+  Object.keys(urlParams).forEach(function (key) {
+    var param = urlParams[key];
+    if (param == undefined) {
+      return;
+    }
+    urlParamStr = urlParamStr + "".concat(key, "=").concat(encodeURIComponent(param), "&");
+  });
+  return encodeURI(newUrl) + urlParamStr;
+}
 function _default(_x3, _x4) {
   return _ref.apply(this, arguments);
 }
 function _ref() {
   _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(input, init) {
+    var newUrl;
     return _regeneratorRuntime().wrap(function _callee2$(_context2) {
       while (1) switch (_context2.prev = _context2.next) {
         case 0:
           _context2.prev = 0;
-          _context2.next = 3;
-          return bsFetch(input, init);
-        case 3:
+          newUrl = init !== null && init !== void 0 && init.urlParams ? mergeUrl(input, init.urlParams) : input;
+          _context2.next = 4;
+          return bsFetch(newUrl, init);
+        case 4:
           return _context2.abrupt("return", _context2.sent);
-        case 6:
-          _context2.prev = 6;
+        case 7:
+          _context2.prev = 7;
           _context2.t0 = _context2["catch"](0);
           if ((init === null || init === void 0 ? void 0 : init.hiddenErrMes) != true) {
             _antd.message.error(_context2.t0.message);
           }
           throw _context2.t0;
-        case 10:
+        case 11:
         case "end":
           return _context2.stop();
       }
-    }, _callee2, null, [[0, 6]]);
+    }, _callee2, null, [[0, 7]]);
   }));
   return _ref.apply(this, arguments);
 }

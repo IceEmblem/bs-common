@@ -18,26 +18,6 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
 function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
 function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
-var urlRegex = /\?[^\?]+$/;
-
-// 合并url参数到url上
-function mergeUrl(url, urlParams) {
-  var newUrl = url;
-  if (urlRegex.test(newUrl)) {
-    newUrl = newUrl + '&';
-  } else {
-    newUrl = newUrl + '?';
-  }
-  var urlParamStr = '';
-  Object.keys(urlParams).forEach(function (key) {
-    var param = urlParams[key];
-    if (param == undefined) {
-      return;
-    }
-    urlParamStr = urlParamStr + "".concat(key, "=").concat(encodeURIComponent(param), "&");
-  });
-  return encodeURI(newUrl) + urlParamStr;
-}
 var BaseApi = /*#__PURE__*/function () {
   function BaseApi() {
     _classCallCheck(this, BaseApi);
@@ -144,7 +124,7 @@ var BaseApi = /*#__PURE__*/function () {
     key: "getList",
     value: function () {
       var _getList = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5(page, itemsPerPage, filters, sortField, sortDirection) {
-        var urlParams, _i, _Object$keys, key, value, _iterator, _step, s, _value$, _value$2, newUrl;
+        var urlParams, _i, _Object$keys, key, value, _iterator, _step, s, _value$, _value$2;
         return _regeneratorRuntime().wrap(function _callee5$(_context5) {
           while (1) switch (_context5.prev = _context5.next) {
             case 0:
@@ -216,12 +196,13 @@ var BaseApi = /*#__PURE__*/function () {
               if (sortField) {
                 urlParams["order%5B".concat(sortField, "%5D")] = sortDirection;
               }
-              newUrl = mergeUrl(this.url, urlParams);
-              _context5.next = 29;
-              return (0, _bsFetch["default"])(newUrl);
-            case 29:
+              _context5.next = 28;
+              return (0, _bsFetch["default"])(this.url, {
+                urlParams: urlParams
+              });
+            case 28:
               return _context5.abrupt("return", _context5.sent);
-            case 30:
+            case 29:
             case "end":
               return _context5.stop();
           }

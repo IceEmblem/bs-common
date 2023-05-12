@@ -1,32 +1,5 @@
 import bsFetch from "./bsFetch";
 
-const urlRegex = /\?[^\?]+$/;
-
-// 合并url参数到url上
-function mergeUrl(url: string, urlParams: any) {
-    let newUrl = url;
-
-    if (urlRegex.test(newUrl)) {
-        newUrl = newUrl + '&';
-    }
-    else {
-        newUrl = newUrl + '?';
-    }
-
-    let urlParamStr = '';
-    Object.keys(urlParams).forEach(key => {
-        let param = urlParams[key];
-
-        if (param == undefined) {
-            return;
-        }
-
-        urlParamStr = urlParamStr + `${key}=${encodeURIComponent(param)}&`
-    });
-
-    return encodeURI(newUrl) + urlParamStr;
-}
-
 type FilterValueType = undefined | boolean | number | string | Array<number | string | Date>;
 interface ListRespone<T> {
     'hydra:member': Array<T>,
@@ -117,7 +90,8 @@ export default abstract class BaseApi<T extends Entity> {
             urlParams[`order%5B${sortField as string}%5D`] = sortDirection;
         }
 
-        let newUrl = mergeUrl(this.url, urlParams);
-        return await bsFetch<ListRespone<T>>(newUrl);
+        return await bsFetch<ListRespone<T>>(this.url, {
+            urlParams
+        });
     }
 }

@@ -48,11 +48,40 @@ async function bsFetch<T>(input: string, init?: RequestInit | undefined): Promis
     throw error;
 }
 
+const urlRegex = /\?[^\?]+$/;
+
+// 合并url参数到url上
+function mergeUrl(url: string, urlParams: any) {
+    let newUrl = url;
+
+    if (urlRegex.test(newUrl)) {
+        newUrl = newUrl + '&';
+    }
+    else {
+        newUrl = newUrl + '?';
+    }
+
+    let urlParamStr = '';
+    Object.keys(urlParams).forEach(key => {
+        let param = urlParams[key];
+
+        if (param == undefined) {
+            return;
+        }
+
+        urlParamStr = urlParamStr + `${key}=${encodeURIComponent(param)}&`
+    });
+
+    return encodeURI(newUrl) + urlParamStr;
+}
+
 export default async function<T>(input: string, init?: RequestInit & {
+    urlParams?: any,
     hiddenErrMes?: boolean
 } | undefined) {
     try {
-        return await bsFetch<T>(input, init);
+        let newUrl = init?.urlParams ? mergeUrl(input, init.urlParams) : input;
+        return await bsFetch<T>(newUrl, init);
     }
     catch (ex) {
         if (init?.hiddenErrMes != true) {
