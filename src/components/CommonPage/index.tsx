@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useImperativeHandle, forwardRef, LegacyRef } from 'react';
 import { BsSlice, BsSliceState } from '../../reduxs/bsCreateSlick';
 import Table, { TableEXColumnType, Sorter } from './Table';
 import { useSelector, useDispatch } from 'react-redux';
 import { FilterColumnType } from './HighLevelSearch';
 
-type Props = {
+export type CommonPageProps = {
     slice: BsSlice,
     // antd Table columns
     columns: Array<TableEXColumnType>,
@@ -37,64 +37,93 @@ type Props = {
     exportAction?: (rows: Array<any>, filter?: any) => void,
 };
 
-const CommonPage = (props: Props) => {
-    const state: BsSliceState = useSelector((state: any) => state[props.slice.name]);
-    const dispatch = useDispatch();
-    const [init, setInit] = useState(false);
+export type CommonPageRefType = BaseCommonPage;
 
-    const onChange = (page?: number, pageSize?: number, filter?: any, sorter?: Sorter) => {
-        let sortField = sorter?.field || state.sortField;
-        let sortDirection = (sorter?.order == 'ascend' ? 'asc' : sorter?.order == 'descend' ? 'desc' : undefined) || state.sortDirection;
-        return dispatch(props.slice.asyncActions.fetchPageDatas({
-            page: page || state.page,
-            pageSize: pageSize || state.pageSize,
-            filter: filter || state.filter,
-            sortField: sortField,
-            sortDirection: sortDirection
-        }) as any);
+class BaseCommonPage extends React.Component<CommonPageProps & {
+    state: BsSliceState,
+    dispatch: ReturnType<typeof useDispatch>
+}> {
+    state = {
+        loading: false,
+        init: false
     }
 
-    useEffect(() => {
+    componentDidMount(): void {
         // 如果页面未渲染过，则使用默认参数
-        if (state.page < 0) {
+        if (this.props.state.page < 0) {
             let sortField;
             let sortDirection;
-            let defaultSortCol = props.columns.find(e => e.defaultSortOrder);
+            let defaultSortCol = this.props.columns.find(e => e.defaultSortOrder);
             if (defaultSortCol) {
                 sortField = defaultSortCol.dataIndex as string;
                 sortDirection = defaultSortCol.defaultSortOrder == 'ascend' ? 'asc' : 'desc'
             }
-            dispatch(props.slice.asyncActions.fetchPageDatas({
+            this.setState({ loading: true });
+            this.props.dispatch(this.props.slice.asyncActions.fetchPageDatas({
                 page: 1,
                 pageSize: 30,
                 filter: undefined,
                 sortField: sortField,
                 sortDirection: sortDirection
-            }) as any);
-            setInit(true);
+            }) as any).finally(() => {
+                this.setState({ loading: false });
+            });
+            this.setState({ init: true });
             return;
         }
-        setInit(true);
-    }, []);
-
-    if (init == false) {
-        return <></>;
+        this.setState({ init: true });
     }
 
-    return <Table
-        page={state.page}
-        pageSize={state.pageSize}
-        total={state.total}
-        datas={state.datas}
-        filter={state.filter}
-        sorter={state.sortField ? {
-            columnKey: state.sortField,
-            field: state.sortField,
-            order: state.sortDirection == 'asc' ? 'ascend' : 'descend'
-        } : undefined}
-        onChange={onChange}
+    onChange = async (page?: number, pageSize?: number, filter?: any, sorter?: Sorter) => {
+        try {
+            let sortField = sorter?.field || this.props.state.sortField;
+            let sortDirection = (sorter?.order == 'ascend' ? 'asc' : sorter?.order == 'descend' ? 'desc' : undefined) || this.props.state.sortDirection;
+            this.setState({ loading: true });
+            await this.props.dispatch(this.props.slice.asyncActions.fetchPageDatas({
+                page: page || this.props.state.page,
+                pageSize: pageSize || this.props.state.pageSize,
+                filter: filter || this.props.state.filter,
+                sortField: sortField,
+                sortDirection: sortDirection
+            }) as any);
+        }
+        catch { }
+        this.setState({ loading: false });
+    }
+
+    render(): React.ReactNode {
+        if (this.state.init == false) {
+            return <></>;
+        }
+
+        return <Table
+            isLoading={this.state.loading}
+            page={this.props.state.page}
+            pageSize={this.props.state.pageSize}
+            total={this.props.state.total}
+            datas={this.props.state.datas}
+            filter={this.props.state.filter}
+            sorter={this.props.state.sortField ? {
+                columnKey: this.props.state.sortField,
+                field: this.props.state.sortField,
+                order: this.props.state.sortDirection == 'asc' ? 'ascend' : 'descend'
+            } : undefined}
+            onChange={this.onChange}
+            {...this.props}
+        />
+    }
+}
+
+const CommonPage = forwardRef<BaseCommonPage, CommonPageProps>((props: CommonPageProps, ref) => {
+    const state: BsSliceState = useSelector((state: any) => state[props.slice.name]);
+    const dispatch = useDispatch();
+
+    return <BaseCommonPage 
+        ref={ref}
+        state={state}
+        dispatch={dispatch}
         {...props}
     />
-}
+});
 
 export default CommonPage;
