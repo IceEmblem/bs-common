@@ -85,15 +85,67 @@ async function bsFetch<T>(input: string, init?: InitType | undefined): Promise<T
     throw error;
 }
 
-export default async function<T>(input: string, init?: InitType | undefined) {
+var fetchSign = 0;
+const bsFetchEx = async function<T>(input: string, init?: InitType | undefined) {
+    fetchSign++;
+    let curFetchSign = fetchSign;
     try {
+        bsFetchCallBack.befores.forEach((fun) => {
+            fun({
+                input,
+                init,
+                fetchSign: curFetchSign
+            });
+        });
         let newUrl = init?.urlParams ? mergeUrl(input, init.urlParams) : input;
-        return await bsFetch<T>(newUrl, init);
+        let res = await bsFetch<T>(newUrl, init);
+        bsFetchCallBack.afters.forEach((fun) => {
+            fun({
+                input,
+                init,
+                res: res,
+                fetchSign: curFetchSign
+            });
+        });
+        return res;
     }
     catch (ex) {
         if (init?.hiddenErrMes != true) {
             message.error(ex.message);
         }
+        bsFetchCallBack.catchs.forEach((fun) => {
+            fun({
+                input,
+                init,
+                ex: ex,
+                fetchSign: curFetchSign
+            });
+        });
         throw ex;
     }
 }
+
+const bsFetchCallBack = {
+    befores: [] as Array<(params: {
+        input: string, 
+        init: InitType | undefined, 
+        fetchSign: number
+    }) => void>,
+    afters: [] as Array<(params: {
+        input: string, 
+        init: InitType | undefined, 
+        res: any, 
+        fetchSign: number
+    }) => void>,
+    catchs: [] as Array<(params: {
+        input: string, 
+        init: InitType | undefined, 
+        ex: any, 
+        fetchSign: number
+    }) => void>,
+};
+
+export {
+    bsFetchCallBack
+};
+export default bsFetchEx;

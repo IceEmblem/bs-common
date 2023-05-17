@@ -124,6 +124,12 @@ Object.defineProperty(exports, "bsFetch", {
     return _bsFetch["default"];
   }
 });
+Object.defineProperty(exports, "bsFetchCallBack", {
+  enumerable: true,
+  get: function get() {
+    return _bsFetch.bsFetchCallBack;
+  }
+});
 Object.defineProperty(exports, "exportXLSX", {
   enumerable: true,
   get: function get() {
@@ -143,7 +149,7 @@ Object.defineProperty(exports, "token", {
   }
 });
 var _BaseApi = _interopRequireWildcard(require("./apis/BaseApi"));
-var _bsFetch = _interopRequireDefault(require("./apis/bsFetch"));
+var _bsFetch = _interopRequireWildcard(require("./apis/bsFetch"));
 var _token = _interopRequireDefault(require("./apis/token"));
 var _CommonPage = _interopRequireDefault(require("./components/CommonPage"));
 var _HighLevelSearch = require("./components/CommonPage/HighLevelSearch");
