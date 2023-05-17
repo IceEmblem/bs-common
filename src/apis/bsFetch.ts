@@ -34,6 +34,14 @@ type InitType = RequestInit & {
     isFile?: boolean
 }
 
+class StatusError extends Error{
+    status: number
+    constructor(message: string, status: number) {
+        super(message);
+        this.status = status;
+    }
+}
+
 async function bsFetch<T>(input: string, init?: InitType | undefined): Promise<T> {
     let newInit: RequestInit = {
         ...init
@@ -66,22 +74,22 @@ async function bsFetch<T>(input: string, init?: InitType | undefined): Promise<T
     }
 
     if (response.status == 401) {
-        let error = new Error('401 Authentication failed');
+        let error = new StatusError('401 Authentication failed', response.status);
         throw error;
     }
 
     if (response.status == 404) {
-        let error = new Error('404 Resource not found');
+        let error = new StatusError('404 Resource not found', response.status);
         throw error;
     }
 
     if (response.status >= 400 && response.status < 500) {
         let data = await response.json();
-        let error = new Error(`${data['hydra:description'] || 'unknown exception'}`);
+        let error = new StatusError(`${data['hydra:description'] || 'unknown exception'}`, response.status);
         throw error;
     }
 
-    const error = new Error(`${response.status} ${response.statusText}`);
+    const error = new StatusError(`${response.status} ${response.statusText}`, response.status);
     throw error;
 }
 
