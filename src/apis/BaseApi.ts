@@ -11,6 +11,59 @@ export interface Entity {
     id?: string,
 }
 
+export const toApiPlatformUrlParams = (
+    page?: number,
+    pageSize?: number,
+    filters?: any,
+    sortField?: any,
+    sortDirection?: 'asc' | 'desc') => {
+    let urlParams = {
+        page: page,
+        itemsPerPage: pageSize
+    } as any;
+
+    if (filters) {
+        for (let key of Object.keys(filters)) {
+            let value = (filters as any)[key] as FilterValueType;
+            if (!value) {
+                continue;
+            }
+
+            if (Array.isArray(value) && value.length > 0) {
+                // 范围筛选
+                if (typeof (value[0]) == 'number' || typeof (value[1]) == 'number') {
+                    urlParams[`${key}%5Bgte%5D`] = value[0];
+                    urlParams[`${key}%5Blte%5D`] = value[1];
+                    continue;
+                }
+
+                // 多选值筛选
+                if (typeof (value[0]) == 'string') {
+                    for (let s of value) {
+                        urlParams[`${key}%5B%5D`] = s;
+                    }
+                    continue;
+                }
+
+                // 日期范围筛选
+                if (typeof (value[0]) == 'object' || typeof (value[1]) == 'object') {
+                    urlParams[`${key}%5Bafter%5D`] = (value[0] as Date)?.toISOString().substring(0, 19);
+                    urlParams[`${key}%5Bbefore%5D`] = (value[1] as Date)?.toISOString().substring(0, 19);
+                    continue;
+                }
+            }
+
+            urlParams[key] = value;
+        }
+    }
+
+    if (sortField) {
+        urlParams[`order%5B${sortField as string}%5D`] = sortDirection;
+    }
+
+    return urlParams;
+}
+
 export default abstract class BaseApi<T extends Entity> {
     abstract url: string;
 
@@ -41,54 +94,11 @@ export default abstract class BaseApi<T extends Entity> {
 
     async getList(
         page: number,
-        itemsPerPage: number,
+        pageSize: number,
         filters?: { [k in (keyof T)]: FilterValueType },
         sortField?: keyof T,
-        sortDirection?: 'asc' | 'desc') 
-    {
-        let urlParams = {
-            page: page,
-            itemsPerPage: itemsPerPage
-        } as any;
-
-        if (filters) {
-            for (let key of Object.keys(filters)) {
-                let value = (filters as any)[key] as FilterValueType;
-                if (!value) {
-                    continue;
-                }
-
-                if (Array.isArray(value) && value.length > 0) {
-                    // 范围筛选
-                    if (typeof (value[0]) == 'number' || typeof (value[1]) == 'number') {
-                        urlParams[`${key}%5Bgte%5D`] = value[0];
-                        urlParams[`${key}%5Blte%5D`] = value[1];
-                        continue;
-                    }
-
-                    // 多选值筛选
-                    if (typeof (value[0]) == 'string') {
-                        for (let s of value) {
-                            urlParams[`${key}%5B%5D`] = s;
-                        }
-                        continue;
-                    }
-
-                    // 日期范围筛选
-                    if (typeof (value[0]) == 'object' || typeof (value[1]) == 'object') {
-                        urlParams[`${key}%5Bafter%5D`] = (value[0] as Date)?.toISOString().substring(0, 19);
-                        urlParams[`${key}%5Bbefore%5D`] = (value[1] as Date)?.toISOString().substring(0, 19);
-                        continue;
-                    }
-                }
-
-                urlParams[key] = value;
-            }
-        }
-
-        if(sortField){
-            urlParams[`order%5B${sortField as string}%5D`] = sortDirection;
-        }
+        sortDirection?: 'asc' | 'desc') {
+        let urlParams = toApiPlatformUrlParams(page, pageSize, filters, sortField, sortDirection)
 
         return await bsFetch<ListRespone<T>>(this.url, {
             urlParams

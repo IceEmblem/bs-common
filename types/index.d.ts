@@ -1,4 +1,4 @@
-export { default as BaseApi, Entity } from '../src/apis/BaseApi';
+export { default as BaseApi, Entity, toApiPlatformUrlParams } from '../src/apis/BaseApi';
 export { default as bsFetch, bsFetchCallBack } from '../src/apis/bsFetch';
 export { default as token } from '../src/apis/token';
 export { default as CommonPage, CommonPageProps, CommonPageRefType } from '../src/components/CommonPage';
