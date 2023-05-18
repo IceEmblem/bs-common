@@ -140,7 +140,7 @@ function _bsFetch() {
 var fetchSign = 0;
 var bsFetchEx = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(input, init) {
-    var curFetchSign, newUrl, res;
+    var curFetchSign, newUrl, task, res;
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) switch (_context.prev = _context.next) {
         case 0:
@@ -154,10 +154,26 @@ var bsFetchEx = /*#__PURE__*/function () {
               fetchSign: curFetchSign
             });
           });
-          newUrl = init !== null && init !== void 0 && init.urlParams ? mergeUrl(input, init.urlParams) : input;
-          _context.next = 7;
-          return bsFetch(newUrl, init);
-        case 7:
+          newUrl = init !== null && init !== void 0 && init.urlParams ? mergeUrl(input, init.urlParams) : input; // 超时设置
+          task = new Promise(function (re, rj) {
+            var timeout = false;
+            var h = setTimeout(function () {
+              timeout = true;
+              rj(new Error('Timeout'));
+            }, 120000);
+            bsFetch("".concat(newUrl), init).then(function (res) {
+              if (timeout) return;
+              clearTimeout(h);
+              re(res);
+            })["catch"](function (ex) {
+              if (timeout) return;
+              clearTimeout(h);
+              rj(ex);
+            });
+          });
+          _context.next = 8;
+          return task;
+        case 8:
           res = _context.sent;
           bsFetchCallBack.afters.forEach(function (fun) {
             fun({
@@ -168,8 +184,8 @@ var bsFetchEx = /*#__PURE__*/function () {
             });
           });
           return _context.abrupt("return", res);
-        case 12:
-          _context.prev = 12;
+        case 13:
+          _context.prev = 13;
           _context.t0 = _context["catch"](2);
           if ((init === null || init === void 0 ? void 0 : init.hiddenErrMes) != true) {
             _antd.message.error(_context.t0.message);
@@ -183,11 +199,11 @@ var bsFetchEx = /*#__PURE__*/function () {
             });
           });
           throw _context.t0;
-        case 17:
+        case 18:
         case "end":
           return _context.stop();
       }
-    }, _callee, null, [[2, 12]]);
+    }, _callee, null, [[2, 13]]);
   }));
   return function bsFetchEx(_x3, _x4) {
     return _ref.apply(this, arguments);

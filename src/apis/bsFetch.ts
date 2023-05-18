@@ -34,7 +34,7 @@ type InitType = RequestInit & {
     isFile?: boolean
 }
 
-class StatusError extends Error{
+class StatusError extends Error {
     status: number
     constructor(message: string, status: number) {
         super(message);
@@ -66,8 +66,8 @@ async function bsFetch<T>(input: string, init?: InitType | undefined): Promise<T
             return null as T;
         }
 
-        if(init?.isFile == true){
-            return response.blob() as T;    
+        if (init?.isFile == true) {
+            return response.blob() as T;
         }
 
         return response.json();
@@ -94,7 +94,7 @@ async function bsFetch<T>(input: string, init?: InitType | undefined): Promise<T
 }
 
 var fetchSign = 0;
-const bsFetchEx = async function<T>(input: string, init?: InitType | undefined) {
+const bsFetchEx = async function <T>(input: string, init?: InitType | undefined) {
     fetchSign++;
     let curFetchSign = fetchSign;
     try {
@@ -106,7 +106,24 @@ const bsFetchEx = async function<T>(input: string, init?: InitType | undefined) 
             });
         });
         let newUrl = init?.urlParams ? mergeUrl(input, init.urlParams) : input;
-        let res = await bsFetch<T>(newUrl, init);
+        // 超时设置
+        const task = new Promise<T>((re, rj) => {
+            let timeout = false;
+            const h = setTimeout(() => {
+                timeout = true;
+                rj(new Error('Timeout'));
+            }, 120000);
+            bsFetch<T>(`${newUrl}`, init).then(res => {
+                if (timeout) return;
+                clearTimeout(h);
+                re(res);
+            }).catch(ex => {
+                if (timeout) return;
+                clearTimeout(h);
+                rj(ex);
+            });
+        });
+        let res = await task;
         bsFetchCallBack.afters.forEach((fun) => {
             fun({
                 input,
@@ -135,20 +152,20 @@ const bsFetchEx = async function<T>(input: string, init?: InitType | undefined) 
 
 const bsFetchCallBack = {
     befores: [] as Array<(params: {
-        input: string, 
-        init: InitType | undefined, 
+        input: string,
+        init: InitType | undefined,
         fetchSign: number
     }) => void>,
     afters: [] as Array<(params: {
-        input: string, 
-        init: InitType | undefined, 
-        res: any, 
+        input: string,
+        init: InitType | undefined,
+        res: any,
         fetchSign: number
     }) => void>,
     catchs: [] as Array<(params: {
-        input: string, 
-        init: InitType | undefined, 
-        ex: any, 
+        input: string,
+        init: InitType | undefined,
+        ex: any,
         fetchSign: number
     }) => void>,
 };
