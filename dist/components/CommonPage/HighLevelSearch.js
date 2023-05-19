@@ -7,7 +7,6 @@ Object.defineProperty(exports, "__esModule", {
 exports["default"] = exports.TimeFilter = exports.TextFilter = exports.SelectFilter = exports.RadioFilter = exports.NumFilter = exports.ChecksFilter = void 0;
 var _react = _interopRequireDefault(require("react"));
 var _antd = require("antd");
-var _icons = require("@ant-design/icons");
 var _dayjs = _interopRequireDefault(require("dayjs"));
 var _LabelEX = _interopRequireDefault(require("../LabelEX"));
 var _lang = _interopRequireDefault(require("../../lang"));
@@ -220,7 +219,6 @@ var _default = /*#__PURE__*/function (_React$Component) {
       }), /*#__PURE__*/_react["default"].createElement("div", {
         className: "flex-grow"
       }), /*#__PURE__*/_react["default"].createElement(_antd.Col, null, /*#__PURE__*/_react["default"].createElement(_antd.Space, null, /*#__PURE__*/_react["default"].createElement(_antd.Button, {
-        icon: /*#__PURE__*/_react["default"].createElement(_icons.SyncOutlined, null),
         onClick: function onClick() {
           var _this2$state = _this2.state,
             isModalVisible = _this2$state.isModalVisible,
@@ -233,7 +231,6 @@ var _default = /*#__PURE__*/function (_React$Component) {
         }
       }, _lang["default"].t('reset')), /*#__PURE__*/_react["default"].createElement(_antd.Button, {
         type: "primary",
-        icon: /*#__PURE__*/_react["default"].createElement(_icons.FileSearchOutlined, null),
         onClick: function onClick() {
           var _this2$state2 = _this2.state,
             isModalVisible = _this2$state2.isModalVisible,

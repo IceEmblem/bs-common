@@ -211,7 +211,7 @@ export default class extends React.Component<Props> {
             <div className='flex-grow'></div>
             <Col>
                 <Space>
-                    <Button icon={<SyncOutlined />}
+                    <Button
                         onClick={() => {
                             let { isModalVisible, ...other } = this.state;
                             Object.keys(other).forEach(key => {
@@ -221,7 +221,7 @@ export default class extends React.Component<Props> {
                             this.props.onChange(other);
                         }}
                     >{lang.t('reset')}</Button>
-                    <Button type='primary' icon={<FileSearchOutlined />}
+                    <Button type='primary'
                         onClick={() => {
                             let { isModalVisible, ...other } = this.state;
                             this.props.onChange(other);

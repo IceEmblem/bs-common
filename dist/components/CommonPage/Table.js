@@ -9,7 +9,6 @@ var _antd = require("antd");
 var _lang = _interopRequireDefault(require("../../lang"));
 var _ExcelFile = require("../ExcelFile");
 var _HighLevelSearch = _interopRequireDefault(require("./HighLevelSearch"));
-var _icons = require("@ant-design/icons");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
@@ -186,16 +185,11 @@ var _default = /*#__PURE__*/function (_React$Component) {
         style: {
           flexGrow: 1
         }
-      }), this.props.tools, /*#__PURE__*/_react["default"].createElement(_antd.Space, null, /*#__PURE__*/_react["default"].createElement(_antd.Tooltip, {
-        title: "\u5237\u65B0"
-      }, /*#__PURE__*/_react["default"].createElement(_antd.Button, {
-        type: "text",
-        icon: /*#__PURE__*/_react["default"].createElement(_icons.SyncOutlined, null),
+      }), this.props.tools, /*#__PURE__*/_react["default"].createElement(_antd.Space, null, /*#__PURE__*/_react["default"].createElement(_antd.Button, {
         onClick: function onClick() {
           _this3.props.onChange(undefined, undefined, undefined, undefined);
         }
-      })), this.props.rowSelection && /*#__PURE__*/_react["default"].createElement(_antd.Button, {
-        type: "primary",
+      }, _lang["default"].t('refresh')), this.props.rowSelection && /*#__PURE__*/_react["default"].createElement(_antd.Button, {
         onClick: this.exportAction
       }, _lang["default"].t('export')))), /*#__PURE__*/_react["default"].createElement("div", {
         ref: function ref(r) {

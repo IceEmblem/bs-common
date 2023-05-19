@@ -206,19 +206,17 @@ export default class extends React.Component<Props> {
                     this.props.tools
                 }
                 <Space>
-                    <Tooltip title='刷新'>
-                        <Button type='text' icon={<SyncOutlined />}
-                            onClick={() => {
-                                this.props.onChange(
-                                    undefined,
-                                    undefined,
-                                    undefined,
-                                    undefined,
-                                );
-                            }}
-                        ></Button>
-                    </Tooltip>
-                    {this.props.rowSelection && <Button type='primary' onClick={this.exportAction}>{lang.t('export')}</Button>}
+                    <Button
+                        onClick={() => {
+                            this.props.onChange(
+                                undefined,
+                                undefined,
+                                undefined,
+                                undefined,
+                            );
+                        }}
+                    >{lang.t('refresh')}</Button>
+                    {this.props.rowSelection && <Button onClick={this.exportAction}>{lang.t('export')}</Button>}
                 </Space>
             </Row>
             <div ref={(r) => this.tableRef = r}
