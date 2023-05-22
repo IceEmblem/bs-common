@@ -198,7 +198,10 @@ var _default = /*#__PURE__*/function (_React$Component) {
     value: function render() {
       var _this2 = this;
       return /*#__PURE__*/_react["default"].createElement(_antd.Row, {
-        align: "bottom"
+        align: "bottom",
+        style: {
+          gap: 4
+        }
       }, this.props.columns.map(function (item) {
         var Filter = item.filter;
         return /*#__PURE__*/_react["default"].createElement(_antd.Col, {

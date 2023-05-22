@@ -187,7 +187,7 @@ export default class extends React.Component<Props> {
     }
 
     render() {
-        return <Row align='bottom'>
+        return <Row align='bottom' style={{ gap: 4 }}>
             {
                 this.props.columns.map(item => {
                     let Filter = item.filter;
