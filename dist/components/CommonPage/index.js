@@ -92,6 +92,7 @@ var BaseCommonPage = /*#__PURE__*/function (_React$Component) {
       if (this.props.state.page < 0) {
         var sortField;
         var sortDirection;
+        var _filter = {};
         var defaultSortCol = this.props.columns.find(function (e) {
           return e.defaultSortOrder;
         });
@@ -99,13 +100,16 @@ var BaseCommonPage = /*#__PURE__*/function (_React$Component) {
           sortField = defaultSortCol.dataIndex;
           sortDirection = defaultSortCol.defaultSortOrder == 'ascend' ? 'asc' : 'desc';
         }
+        if (this.props.classConfig && this.props.classConfig.defaultValue) {
+          _filter[this.props.classConfig.queryName] = this.props.classConfig.defaultValue;
+        }
         this.setState({
           loading: true
         });
         this.props.dispatch(this.props.slice.asyncActions.fetchPageDatas({
           page: 1,
           pageSize: 30,
-          filter: undefined,
+          filter: _filter,
           sortField: sortField,
           sortDirection: sortDirection
         }))["finally"](function () {

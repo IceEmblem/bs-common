@@ -30,6 +30,8 @@ export type CommonPageProps = {
         classes: Array<{ label: React.ReactNode, value: string }>,
         // api 查询时使用的名称
         queryName: string,
+        // 默认值
+        defaultValue?: string
     },
     // 工具栏
     tools?: React.ReactNode,
@@ -53,16 +55,20 @@ class BaseCommonPage extends React.Component<CommonPageProps & {
         if (this.props.state.page < 0) {
             let sortField;
             let sortDirection;
+            let filter = {};
             let defaultSortCol = this.props.columns.find(e => e.defaultSortOrder);
             if (defaultSortCol) {
                 sortField = defaultSortCol.dataIndex as string;
                 sortDirection = defaultSortCol.defaultSortOrder == 'ascend' ? 'asc' : 'desc'
             }
+            if (this.props.classConfig && this.props.classConfig.defaultValue) {
+                filter[this.props.classConfig.queryName] = this.props.classConfig.defaultValue;
+            }
             this.setState({ loading: true });
             this.props.dispatch(this.props.slice.asyncActions.fetchPageDatas({
                 page: 1,
                 pageSize: 30,
-                filter: undefined,
+                filter: filter,
                 sortField: sortField,
                 sortDirection: sortDirection
             }) as any).finally(() => {
@@ -118,7 +124,7 @@ const CommonPage = forwardRef<BaseCommonPage, CommonPageProps>((props: CommonPag
     const state: BsSliceState = useSelector((state: any) => state[props.slice.name]);
     const dispatch = useDispatch();
 
-    return <BaseCommonPage 
+    return <BaseCommonPage
         ref={ref}
         state={state}
         dispatch={dispatch}
