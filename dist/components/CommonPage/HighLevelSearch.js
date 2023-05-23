@@ -37,7 +37,7 @@ var TextFilter = function TextFilter(props) {
   if (isNumber == true) {
     return /*#__PURE__*/_react["default"].createElement(_antd.InputNumber, {
       className: "w-full",
-      placeholder: "input",
+      placeholder: "Input",
       controls: false,
       value: value,
       onChange: function onChange(val) {
@@ -46,7 +46,7 @@ var TextFilter = function TextFilter(props) {
     });
   }
   return /*#__PURE__*/_react["default"].createElement(_antd.Input, {
-    placeholder: "input",
+    placeholder: "Input",
     value: value,
     onChange: function onChange(e) {
       return setValue(e.target.value);
@@ -63,6 +63,7 @@ var TimeFilter = function TimeFilter(props) {
   return /*#__PURE__*/_react["default"].createElement("div", {
     className: "flex items-center"
   }, /*#__PURE__*/_react["default"].createElement(_antd.DatePicker, {
+    placeholder: "Select Date",
     className: "w-1/2",
     showTime: {
       format: 'HH:mm'
@@ -73,6 +74,7 @@ var TimeFilter = function TimeFilter(props) {
       setValue([value === null || value === void 0 ? void 0 : value.toDate(), range[1]]);
     }
   }), "-", /*#__PURE__*/_react["default"].createElement(_antd.DatePicker, {
+    placeholder: "Select Date",
     className: "w-1/2",
     showTime: {
       format: 'HH:mm'
@@ -129,7 +131,7 @@ var SelectFilter = function SelectFilter(props) {
   }, /*#__PURE__*/_react["default"].createElement(_antd.Select, {
     showSearch: true,
     allowClear: true,
-    placeholder: "select",
+    placeholder: "Select",
     style: {
       minWidth: 180
     },
@@ -158,7 +160,7 @@ var NumFilter = function NumFilter(props) {
     className: "flex items-center"
   }, /*#__PURE__*/_react["default"].createElement(_antd.InputNumber, {
     className: "flex-grow",
-    placeholder: "min",
+    placeholder: "Min",
     max: 99999999,
     value: range[0],
     onChange: function onChange(value) {
@@ -166,7 +168,7 @@ var NumFilter = function NumFilter(props) {
     }
   }), "-", /*#__PURE__*/_react["default"].createElement(_antd.InputNumber, {
     className: "flex-grow",
-    placeholder: "max",
+    placeholder: "Max",
     max: 99999999,
     value: range[1],
     onChange: function onChange(value) {

@@ -22,7 +22,7 @@ export const TextFilter = (props: fliterProps & {
     if (isNumber == true) {
         return <InputNumber
             className='w-full'
-            placeholder='input'
+            placeholder='Input'
             controls={false}
             value={value}
             onChange={val => setValue(val)}
@@ -30,7 +30,7 @@ export const TextFilter = (props: fliterProps & {
     }
 
     return <Input
-        placeholder='input'
+        placeholder='Input'
         value={value}
         onChange={e => setValue(e.target.value)}
     />
@@ -44,6 +44,7 @@ export const TimeFilter = (props: fliterProps) => {
 
     return <div className='flex items-center'>
         <DatePicker
+            placeholder='Select Date'
             className='w-1/2'
             showTime={{ format: 'HH:mm' }}
             format="YYYY-MM-DD HH:mm"
@@ -54,6 +55,7 @@ export const TimeFilter = (props: fliterProps) => {
         />
         -
         <DatePicker
+            placeholder='Select Date'
             className='w-1/2'
             showTime={{ format: 'HH:mm' }}
             format="YYYY-MM-DD HH:mm"
@@ -110,7 +112,7 @@ export const SelectFilter = (props: fliterProps & {
         <Select
             showSearch
             allowClear
-            placeholder='select'
+            placeholder='Select'
             style={{ minWidth: 180 }}
             value={value}
             onChange={(val) => {
@@ -135,7 +137,7 @@ export const NumFilter = (props: fliterProps) => {
     return <div className='flex items-center'>
         <InputNumber
             className='flex-grow'
-            placeholder='min'
+            placeholder='Min'
             max={99999999}
             value={range[0]}
             onChange={(value) => {
@@ -145,7 +147,7 @@ export const NumFilter = (props: fliterProps) => {
         -
         <InputNumber
             className='flex-grow'
-            placeholder='max'
+            placeholder='Max'
             max={99999999}
             value={range[1]}
             onChange={(value) => {
