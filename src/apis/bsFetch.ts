@@ -22,7 +22,14 @@ function mergeUrl(url: string, urlParams: any) {
             return;
         }
 
-        urlParamStr = urlParamStr + `${key}=${encodeURIComponent(param)}&`
+        if (Array.isArray(param) && param.length > 0) {
+            param.forEach(item => {
+                urlParamStr = urlParamStr + `${key}=${encodeURIComponent(item)}&`
+            });
+        }
+        else{
+            urlParamStr = urlParamStr + `${key}=${encodeURIComponent(param)}&`
+        }
     });
 
     return encodeURI(newUrl) + urlParamStr;

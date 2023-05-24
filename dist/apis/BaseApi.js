@@ -15,9 +15,6 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
 function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
-function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
 var toApiPlatformUrlParams = function toApiPlatformUrlParams(page, pageSize, filters, sortField, sortDirection) {
   var urlParams = {
     page: page,
@@ -38,28 +35,17 @@ var toApiPlatformUrlParams = function toApiPlatformUrlParams(page, pageSize, fil
           continue;
         }
 
-        // 多选值筛选
-        if (typeof value[0] == 'string') {
-          var _iterator = _createForOfIteratorHelper(value),
-            _step;
-          try {
-            for (_iterator.s(); !(_step = _iterator.n()).done;) {
-              var s = _step.value;
-              urlParams["".concat(key, "%5B%5D")] = s;
-            }
-          } catch (err) {
-            _iterator.e(err);
-          } finally {
-            _iterator.f();
-          }
-          continue;
-        }
-
         // 日期范围筛选
         if (_typeof(value[0]) == 'object' || _typeof(value[1]) == 'object') {
           var _value$, _value$2;
           urlParams["".concat(key, "%5Bafter%5D")] = (_value$ = value[0]) === null || _value$ === void 0 ? void 0 : _value$.toISOString().substring(0, 19);
           urlParams["".concat(key, "%5Bbefore%5D")] = (_value$2 = value[1]) === null || _value$2 === void 0 ? void 0 : _value$2.toISOString().substring(0, 19);
+          continue;
+        }
+
+        // 多选值筛选
+        if (typeof value[0] == 'string') {
+          urlParams["".concat(key, "%5B%5D")] = value;
           continue;
         }
       }

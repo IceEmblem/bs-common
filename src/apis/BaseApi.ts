@@ -37,18 +37,16 @@ export const toApiPlatformUrlParams = (
                     continue;
                 }
 
-                // 多选值筛选
-                if (typeof (value[0]) == 'string') {
-                    for (let s of value) {
-                        urlParams[`${key}%5B%5D`] = s;
-                    }
-                    continue;
-                }
-
                 // 日期范围筛选
                 if (typeof (value[0]) == 'object' || typeof (value[1]) == 'object') {
                     urlParams[`${key}%5Bafter%5D`] = (value[0] as Date)?.toISOString().substring(0, 19);
                     urlParams[`${key}%5Bbefore%5D`] = (value[1] as Date)?.toISOString().substring(0, 19);
+                    continue;
+                }
+
+                // 多选值筛选
+                if (typeof (value[0]) == 'string') {
+                    urlParams[`${key}%5B%5D`] = value;
                     continue;
                 }
             }

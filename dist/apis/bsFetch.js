@@ -45,7 +45,13 @@ function mergeUrl(url, urlParams) {
     if (param == undefined) {
       return;
     }
-    urlParamStr = urlParamStr + "".concat(key, "=").concat(encodeURIComponent(param), "&");
+    if (Array.isArray(param) && param.length > 0) {
+      param.forEach(function (item) {
+        urlParamStr = urlParamStr + "".concat(key, "=").concat(encodeURIComponent(item), "&");
+      });
+    } else {
+      urlParamStr = urlParamStr + "".concat(key, "=").concat(encodeURIComponent(param), "&");
+    }
   });
   return encodeURI(newUrl) + urlParamStr;
 }
