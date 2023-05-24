@@ -161,7 +161,15 @@ export default class extends React.Component<Props> {
             flexDirection: 'column',
             overflow: 'hidden'
         }}>
-            <div style={{ marginBottom: '1rem' }}>
+            <div style={{
+                marginBottom: '0.5rem',
+                backgroundColor: '#fff',
+                paddingTop: '0.5rem',
+                paddingBottom: '0.5rem',
+                paddingLeft: '0.75rem',
+                paddingRight: '0.75rem',
+                borderRadius: '0.5rem'
+            }}>
                 <HighLevelSearch
                     columns={this.props.filterColumns}
                     onChange={(filter) => {
@@ -176,85 +184,100 @@ export default class extends React.Component<Props> {
                     }}
                 />
             </div>
-            <Row justify='space-between' style={{ gap: 8, alignItems: 'center', marginBottom: 8 }}>
-                {
-                    this.props.classConfig &&
-                    <Tabs
-                        style={{ flexGrow: 1 }}
-                        tabBarStyle={{ marginBottom: 0 }}
+            <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                flexGrow: 1,
+                flexShrink: 100,
+                overflowY: 'hidden',
+                marginBottom: '0.5rem',
+                borderBottom: "1px solid #f0f2f5",
+                backgroundColor: '#fff',
+                paddingTop: '0.5rem',
+                paddingBottom: '0.5rem',
+                paddingLeft: '0.75rem',
+                paddingRight: '0.75rem',
+                borderRadius: '0.5rem'
+            }}>
+                <Row justify='space-between' style={{ gap: 8, alignItems: 'center', marginBottom: 8 }}>
+                    {
+                        this.props.classConfig &&
+                        <Tabs
+                            style={{ flexGrow: 1 }}
+                            tabBarStyle={{ marginBottom: 0 }}
+                            size='small'
+                            type="card"
+                            activeKey={this.props.filter?.[this.props.classConfig.queryName]}
+                            onChange={(val) => {
+                                let newFilter = { ...this.props.filter };
+                                newFilter[this.props.classConfig!.queryName] = val;
+                                this.props.onChange(
+                                    undefined,
+                                    undefined,
+                                    newFilter,
+                                    undefined,
+                                );
+                            }}
+                        >
+                            {
+                                this.props.classConfig.classes.map(item => (<Tabs.TabPane tab={item.label} key={item.value} />))
+                            }
+                        </Tabs>
+                    }
+                    <div style={{ flexGrow: 1 }}></div>
+                    {
+                        this.props.tools
+                    }
+                    <Space>
+                        <Button
+                            onClick={() => {
+                                this.props.onChange(
+                                    undefined,
+                                    undefined,
+                                    undefined,
+                                    undefined,
+                                );
+                            }}
+                        >{lang.t('refresh')}</Button>
+                        {this.props.rowSelection && <Button onClick={this.exportAction}>{lang.t('export')}</Button>}
+                    </Space>
+                </Row>
+                <div ref={(r) => this.tableRef = r}
+                    style={{
+                        display: 'flex',
+                        flexGrow: 1,
+                        flexShrink: 100,
+                        overflowY: 'hidden',
+                        borderBottom: "1px solid #f0f2f5"
+                    }}>
+                    <Table
+                        rowKey={this.props.rowKey || 'id'}
+                        loading={this.props.isLoading}
                         size='small'
-                        type="card"
-                        activeKey={this.props.filter?.[this.props.classConfig.queryName]}
-                        onChange={(val) => {
-                            let newFilter = { ...this.props.filter };
-                            newFilter[this.props.classConfig!.queryName] = val;
-                            this.props.onChange(
-                                undefined,
-                                undefined,
-                                newFilter,
-                                undefined,
-                            );
+                        columns={colums}
+                        dataSource={this.props.datas}
+                        pagination={false}
+                        scroll={{
+                            x: this.state.scroll.x ? this.state.scroll.x : undefined,
+                            y: this.state.scroll.y
                         }}
-                    >
-                        {
-                            this.props.classConfig.classes.map(item => (<Tabs.TabPane tab={item.label} key={item.value} />))
-                        }
-                    </Tabs>
-                }
-                <div style={{ flexGrow: 1 }}></div>
-                {
-                    this.props.tools
-                }
-                <Space>
-                    <Button
-                        onClick={() => {
+                        onChange={(pagination, filters, sorter) => {
                             this.props.onChange(
                                 undefined,
                                 undefined,
                                 undefined,
-                                undefined,
+                                sorter as any
                             );
                         }}
-                    >{lang.t('refresh')}</Button>
-                    {this.props.rowSelection && <Button onClick={this.exportAction}>{lang.t('export')}</Button>}
-                </Space>
-            </Row>
-            <div ref={(r) => this.tableRef = r}
-                style={{
-                    display: 'flex',
-                    flexGrow: 1,
-                    overflowY: 'hidden',
-                    marginBottom: '1rem',
-                    flexShrink: 100,
-                    borderBottom: "1px solid #f0f2f5"
-                }}>
-                <Table
-                    rowKey={this.props.rowKey || 'id'}
-                    loading={this.props.isLoading}
-                    size='small'
-                    columns={colums}
-                    dataSource={this.props.datas}
-                    pagination={false}
-                    scroll={{
-                        x: this.state.scroll.x ? this.state.scroll.x : undefined,
-                        y: this.state.scroll.y
-                    }}
-                    onChange={(pagination, filters, sorter) => {
-                        this.props.onChange(
-                            undefined,
-                            undefined,
-                            undefined,
-                            sorter as any
-                        );
-                    }}
-                    rowSelection={this.props.rowSelection ? {
-                        selectedRowKeys: this.props.rowSelection.selectedRowKeys,
-                        onChange: (selectedRowKeys, selectedRows) => {
-                            this.props.rowSelection!.onSelectChange(selectedRowKeys, selectedRows);
-                        },
-                        checkStrictly: false,
-                    } : undefined}
-                />
+                        rowSelection={this.props.rowSelection ? {
+                            selectedRowKeys: this.props.rowSelection.selectedRowKeys,
+                            onChange: (selectedRowKeys, selectedRows) => {
+                                this.props.rowSelection!.onSelectChange(selectedRowKeys, selectedRows);
+                            },
+                            checkStrictly: false,
+                        } : undefined}
+                    />
+                </div>
             </div>
             <Row>
                 {this.props.bottomTools}

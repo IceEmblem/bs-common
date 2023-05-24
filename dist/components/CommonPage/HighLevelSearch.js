@@ -202,14 +202,14 @@ var _default = /*#__PURE__*/function (_React$Component) {
       return /*#__PURE__*/_react["default"].createElement(_antd.Row, {
         align: "bottom",
         style: {
-          gap: 4
+          gap: '0.5rem'
         }
       }, this.props.columns.map(function (item) {
         var Filter = item.filter;
         return /*#__PURE__*/_react["default"].createElement(_antd.Col, {
           key: item.dataIndex,
           style: {
-            marginRight: '1rem'
+            marginRight: '0.25rem'
           }
         }, /*#__PURE__*/_react["default"].createElement(_LabelEX["default"], {
           text: item.title

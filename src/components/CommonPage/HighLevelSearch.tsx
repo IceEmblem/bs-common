@@ -189,13 +189,13 @@ export default class extends React.Component<Props> {
     }
 
     render() {
-        return <Row align='bottom' style={{ gap: 4 }}>
+        return <Row align='bottom' style={{ gap: '0.5rem' }}>
             {
                 this.props.columns.map(item => {
                     let Filter = item.filter;
 
                     return (
-                        <Col key={item.dataIndex} style={{ marginRight: '1rem' }}>
+                        <Col key={item.dataIndex} style={{ marginRight: '0.25rem' }}>
                             <LabelEX text={item.title}>
                                 <Filter
                                     value={this.state[item.dataIndex]}

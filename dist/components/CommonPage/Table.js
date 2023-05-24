@@ -147,14 +147,36 @@ var _default = /*#__PURE__*/function (_React$Component) {
         }
       }, /*#__PURE__*/_react["default"].createElement("div", {
         style: {
-          marginBottom: '1rem'
+          marginBottom: '0.5rem',
+          backgroundColor: '#fff',
+          paddingTop: '0.5rem',
+          paddingBottom: '0.5rem',
+          paddingLeft: '0.75rem',
+          paddingRight: '0.75rem',
+          borderRadius: '0.5rem'
         }
       }, /*#__PURE__*/_react["default"].createElement(_HighLevelSearch["default"], {
         columns: this.props.filterColumns,
         onChange: function onChange(filter) {
           _this3.props.onChange(1, undefined, _objectSpread(_objectSpread({}, _this3.props.filter), filter));
         }
-      })), /*#__PURE__*/_react["default"].createElement(_antd.Row, {
+      })), /*#__PURE__*/_react["default"].createElement("div", {
+        style: {
+          display: 'flex',
+          flexDirection: 'column',
+          flexGrow: 1,
+          flexShrink: 100,
+          overflowY: 'hidden',
+          marginBottom: '0.5rem',
+          borderBottom: "1px solid #f0f2f5",
+          backgroundColor: '#fff',
+          paddingTop: '0.5rem',
+          paddingBottom: '0.5rem',
+          paddingLeft: '0.75rem',
+          paddingRight: '0.75rem',
+          borderRadius: '0.5rem'
+        }
+      }, /*#__PURE__*/_react["default"].createElement(_antd.Row, {
         justify: "space-between",
         style: {
           gap: 8,
@@ -198,9 +220,8 @@ var _default = /*#__PURE__*/function (_React$Component) {
         style: {
           display: 'flex',
           flexGrow: 1,
-          overflowY: 'hidden',
-          marginBottom: '1rem',
           flexShrink: 100,
+          overflowY: 'hidden',
           borderBottom: "1px solid #f0f2f5"
         }
       }, /*#__PURE__*/_react["default"].createElement(_antd.Table, {
@@ -224,7 +245,7 @@ var _default = /*#__PURE__*/function (_React$Component) {
           },
           checkStrictly: false
         } : undefined
-      })), /*#__PURE__*/_react["default"].createElement(_antd.Row, null, this.props.bottomTools, /*#__PURE__*/_react["default"].createElement("div", {
+      }))), /*#__PURE__*/_react["default"].createElement(_antd.Row, null, this.props.bottomTools, /*#__PURE__*/_react["default"].createElement("div", {
         style: {
           flexGrow: 1
         }
