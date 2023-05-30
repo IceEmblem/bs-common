@@ -255,7 +255,7 @@ var _default = /*#__PURE__*/function (_React$Component) {
         pageSize: this.props.pageSize,
         current: this.props.page,
         showSizeChanger: true,
-        pageSizeOptions: ['10', '30', '50', '100'],
+        pageSizeOptions: this.props.pageSizeOptions || ['10', '30', '50', '100'],
         showQuickJumper: true,
         showTotal: function showTotal(total) {
           return /*#__PURE__*/_react["default"].createElement("div", null, /*#__PURE__*/_react["default"].createElement("span", {

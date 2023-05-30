@@ -37,6 +37,8 @@ export type CommonPageProps = {
     tools?: React.ReactNode,
     // 导出动作
     exportAction?: (rows: Array<any>, filter?: any) => void,
+    // 页大小
+    pageSizeOptions?: string[] | number[]
 };
 
 export type CommonPageRefType = BaseCommonPage;

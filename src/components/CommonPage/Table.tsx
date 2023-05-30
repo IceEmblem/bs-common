@@ -57,6 +57,8 @@ type Props = {
     tools?: React.ReactNode,
     // 导出动作
     exportAction?: (rows: Array<any>, filter?: any) => void,
+    // 页大小
+    pageSizeOptions?: string[] | number[]
 };
 
 export default class extends React.Component<Props> {
@@ -288,7 +290,7 @@ export default class extends React.Component<Props> {
                     pageSize={this.props.pageSize}
                     current={this.props.page}
                     showSizeChanger
-                    pageSizeOptions={['10', '30', '50', '100']}
+                    pageSizeOptions={this.props.pageSizeOptions || ['10', '30', '50', '100']}
                     showQuickJumper
                     showTotal={total => <div>
                         <span style={{ marginLeft: '1rem' }}>{`${lang.t('total_data')} ${total} ${lang.t('items')}`}</span>
