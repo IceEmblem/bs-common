@@ -94,6 +94,7 @@ class BaseCommonPage extends React.Component<CommonPageProps & {
                 sortField: sortField,
                 sortDirection: sortDirection
             }) as any);
+            this.props.rowSelection?.onSelectChange([], []);
         }
         catch { }
         this.setState({ loading: false });

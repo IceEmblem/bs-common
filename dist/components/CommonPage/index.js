@@ -44,7 +44,7 @@ var BaseCommonPage = /*#__PURE__*/function (_React$Component) {
     });
     _defineProperty(_assertThisInitialized(_this), "onChange", /*#__PURE__*/function () {
       var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(page, pageSize, filter, sorter) {
-        var sortField, sortDirection;
+        var _this$props$rowSelect, sortField, sortDirection;
         return _regeneratorRuntime().wrap(function _callee$(_context) {
           while (1) switch (_context.prev = _context.next) {
             case 0:
@@ -63,20 +63,21 @@ var BaseCommonPage = /*#__PURE__*/function (_React$Component) {
                 sortDirection: sortDirection
               }));
             case 6:
-              _context.next = 10;
+              (_this$props$rowSelect = _this.props.rowSelection) === null || _this$props$rowSelect === void 0 ? void 0 : _this$props$rowSelect.onSelectChange([], []);
+              _context.next = 11;
               break;
-            case 8:
-              _context.prev = 8;
+            case 9:
+              _context.prev = 9;
               _context.t0 = _context["catch"](0);
-            case 10:
+            case 11:
               _this.setState({
                 loading: false
               });
-            case 11:
+            case 12:
             case "end":
               return _context.stop();
           }
-        }, _callee, null, [[0, 8]]);
+        }, _callee, null, [[0, 9]]);
       }));
       return function (_x, _x2, _x3, _x4) {
         return _ref.apply(this, arguments);
